@@ -52,34 +52,34 @@ tesla_revenue = tesla_revenue[tesla_revenue['Revenue'] != ""]
 
 print(tesla_revenue.tail())
 
-# make_graph(tesla_data, tesla_revenue, 'Tesla')
+gameStop = yf.Ticker('GME')
+gme_data = gameStop.history(period="max")
+gme_data.reset_index(inplace=True)
 
-# gameStop = yf.Ticker('GME')
-# gme_data = gameStop.history(period="max")
-# gme_data.reset_index(inplace=True)
+url01 = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/stock.html'
+html_data01 = requests.get(url01).text
 
-# url01 = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/stock.html'
-# html_data01 = requests.get(url01).text
+soup01 = BeautifulSoup(html_data01, 'html.parser')
 
-# soup01 = BeautifulSoup(html_data01, 'html.parser')
+gme_revenue = pd.DataFrame(columns=["Date", "Revenue"])
 
-# gme_revenue = pd.DataFrame(columns=["Date", "Revenue"])
-
-# for row1 in soup01.find("tbody").find_all("tr"):
-#     col1     = row1.find_all("td")
-#     date1    = col1[0].text
-#     revenue1 = col1[1].text
-#     gme_revenue = gme_revenue.append({"Date":date1, "Revenue":revenue1}, ignore_index=True)
+for row1 in soup01.find("tbody").find_all("tr"):
+    col1     = row1.find_all("td")
+    date1    = col1[0].text
+    revenue1 = col1[1].text
+    gme_revenue = gme_revenue.append({"Date":date1, "Revenue":revenue1}, ignore_index=True)
     
-# gme_revenue["Revenue"] = gme_revenue['Revenue'].str.replace(',|\$',"")
+gme_revenue["Revenue"] = gme_revenue['Revenue'].str.replace(',|\$',"")
 
-# gme_revenue.dropna(inplace=True)
+gme_revenue.dropna(inplace=True)
 
-# gme_revenue = gme_revenue[gme_revenue['Revenue'] != ""]
+gme_revenue = gme_revenue[gme_revenue['Revenue'] != ""]
     
-# print(gme_revenue.tail())
+print(gme_revenue.tail())
 
-# make_graph(gme_data, gme_revenue, 'GameStop')
+make_graph(tesla_data, tesla_revenue, 'Tesla')
+
+make_graph(gme_data, gme_revenue, 'GameStop')
 
 
 
